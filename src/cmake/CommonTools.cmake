@@ -47,7 +47,6 @@ set(OUT_LIB_PATH ${OUT}/lib)
 set(OUT_DLL_PATH ${OUT}/bin.x64)
 set(OUT_INCLUDE_PATH ${OUT}/include)
 set(OUT_RUN_PATH ${OUT}/bin${ARCH_SUFFIX})
-set(OUT_RUN_PATH ${OUT}/bin.x64)
 
 message(STATUS "输出路径架构后缀: ${ARCH_SUFFIX}")
 message(STATUS "DLL 路径: ${OUT_DLL_PATH}")
