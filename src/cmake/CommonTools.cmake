@@ -44,7 +44,7 @@ message("out = ${OUT}")
 
 set(OUT_DLL_PATH ${OUT}/bin${ARCH_SUFFIX})
 set(OUT_LIB_PATH ${OUT}/lib)
-set(OUT_DLL_PATH ${OUT}/bin.x64)
+set(OUT_DLL_PATH ${OUT}/bin${ARCH_SUFFIX})
 set(OUT_INCLUDE_PATH ${OUT}/include)
 set(OUT_RUN_PATH ${OUT}/bin${ARCH_SUFFIX})
 
