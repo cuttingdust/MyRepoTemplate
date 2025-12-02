@@ -21,35 +21,13 @@ set(SDK_LIB_DIRECTORY
 	# $ENV{MYSQL_SERVER80}/lib
 )
 
-# 根据 -A 参数设置输出路径
-if(CMAKE_GENERATOR_PLATFORM)
-    # 将平台名称映射到标准架构名称
-    if(CMAKE_GENERATOR_PLATFORM STREQUAL "Win32")
-        set(ARCH_SUFFIX ".x86")
-    elseif(CMAKE_GENERATOR_PLATFORM STREQUAL "x64")
-        set(ARCH_SUFFIX ".x64")
-    elseif(CMAKE_GENERATOR_PLATFORM STREQUAL "ARM64")
-        set(ARCH_SUFFIX ".arm64")
-    else()
-        set(ARCH_SUFFIX ".${CMAKE_GENERATOR_PLATFORM}")
-    endif()
-else()
-    # 默认架构
-    set(ARCH_SUFFIX ".x64")
-endif()
-
 # 输出路径
 set(OUT ${CMAKE_CURRENT_SOURCE_DIR}/../out)
 message("out = ${OUT}")
-
-set(OUT_DLL_PATH ${OUT}/bin${ARCH_SUFFIX})
 set(OUT_LIB_PATH ${OUT}/lib)
-set(OUT_DLL_PATH ${OUT}/bin${ARCH_SUFFIX})
+set(OUT_DLL_PATH ${OUT}/bin.x64)
 set(OUT_INCLUDE_PATH ${OUT}/include)
-set(OUT_RUN_PATH ${OUT}/bin${ARCH_SUFFIX})
-
-message(STATUS "输出路径架构后缀: ${ARCH_SUFFIX}")
-message(STATUS "DLL 路径: ${OUT_DLL_PATH}")
+set(OUT_RUN_PATH ${OUT}/bin.x64)
 
 # 安装与查找
 string(REPLACE "\\" "/" INSTALL_PREFIX ${OUT})
@@ -285,6 +263,19 @@ macro(set_cpp name)
     )
 
     if(MSVC)
+		if(MFC_FOUND)
+		#set_target_properties(${name} PROPERTIES LINK_FLAGS "/SUBSYSTEM:WINDOWS")
+	
+		target_link_options(${name} PRIVATE /ENTRY:wWinMainCRTStartup)
+		
+		target_compile_definitions(${name} PRIVATE 
+		-DWIN32
+		-D_DEBUG
+		-D_WINDOWS
+		-D_AFXDLL
+		)
+		endif()
+	
 		 target_compile_definitions(${name} PUBLIC
 			-D_CRT_SECURE_NO_WARNINGS
 		)
