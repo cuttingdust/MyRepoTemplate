@@ -18,4 +18,6 @@ if(MSVC)
 
     # set_target_properties(${PROJECT_NAME} PROPERTIES COMPILE_FLAGS "/GL")
     # set_target_properties(${PROJECT_NAME} PROPERTIES LINK_FLAGS "/LTCG")
+	
+	target_compile_options(${PROJECT_NAME} PRIVATE /utf-8)
 endif()
