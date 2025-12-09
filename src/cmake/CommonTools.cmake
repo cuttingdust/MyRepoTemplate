@@ -317,7 +317,7 @@ macro(set_cpp name)
         -D_USE_MATH_DEFINES
     )
 
-    if(MSVC)
+    if(MSVC) ### MFC 相关设置
 		if(MFC_FOUND)
 		#set_target_properties(${name} PROPERTIES LINK_FLAGS "/SUBSYSTEM:WINDOWS")
 	
