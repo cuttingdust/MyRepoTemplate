@@ -83,7 +83,9 @@ macro(get_src_include)
 	
 	FILE(GLOB H_FILE_I 
 		${CMAKE_CURRENT_LIST_DIR}/include/*.h
+		${CMAKE_CURRENT_LIST_DIR}/include/*.hpp
 		${CMAKE_CURRENT_LIST_DIR}/*.h
+		${CMAKE_CURRENT_LIST_DIR}/*.hpp
 	)
 	# message("H_FILE_I = ${H_FILE_I}")
 	
