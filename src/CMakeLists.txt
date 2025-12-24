@@ -37,6 +37,22 @@ if(OpenMP_FOUND)
     set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} ${OpenMP_EXE_LINKER_FLAGS}")
 endif()
 
+# #MFC
+# find_package(MFC)
+# message("MFC_FOUND = ${MFC_FOUND}")
+
+# if(MFC_FOUND)
+# #1: static MFC library, 2: shared MFC library
+# set(CMAKE_MFC_FLAG 2)
+# endif()
+
+# #Python3
+# find_package(Python3 REQUIRED COMPONENTS Interpreter Development)
+# message("Python3_FOUND = ${Python3_FOUND}")
+# message("Python3_VERSION = ${Python3_VERSION}")
+# message("Python3_LIBS = ${Python3_LIBRARIES}")
+#==================================================================================#
+
 # OpenCV
 find_package(OpenCV CONFIG REQUIRED)
 message("OpenCV_FOUND = ${OpenCV_FOUND}")
