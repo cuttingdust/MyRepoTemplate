@@ -69,6 +69,11 @@ set(LOG_MOUDLES
 	spdlog::spdlog_header_only
 )
 
+#python
+set(PYTHON_MOUDLES
+	Python3::Python
+)
+
 # 获取当前目录下源码和头文件
 macro(get_src_include)
     aux_source_directory(${CMAKE_CURRENT_LIST_DIR}/src SRC)
