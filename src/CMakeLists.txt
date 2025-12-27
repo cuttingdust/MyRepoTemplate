@@ -1,4 +1,7 @@
 cmake_minimum_required(VERSION 3.12)
+if(POLICY CMP0177)
+	cmake_policy(SET CMP0177 NEW)
+endif()
 
 # 使用 vcpkg 工具链文件 Warning  工具连设置必须是在project 前面
 set(CMAKE_TOOLCHAIN_FILE $ENV{VCPKG_ROOT}/scripts/buildsystems/vcpkg.cmake CACHE STRING "Vcpkg toolchain file")
