@@ -326,35 +326,50 @@ macro(set_cpp name)
 
     if(MSVC) ### MFC 相关设置
 		if(MFC_FOUND)
-		#set_target_properties(${name} PROPERTIES LINK_FLAGS "/SUBSYSTEM:WINDOWS")
-	
-		target_link_options(${name} PRIVATE /ENTRY:wWinMainCRTStartup)
+			# 获取目标类型
+			get_target_property(target_type ${name} TYPE)
 		
-		target_compile_definitions(${name} PRIVATE 
-		-DWIN32
-		-D_DEBUG
-		-D_WINDOWS
-		-D_AFXDLL
-		)
+			# 打印调试信息
+			message(STATUS "Target ${name} type: ${target_type}")
+        
+			# 只有可执行程序才需要设置入口点
+			if(${target_type} STREQUAL "EXECUTABLE")
+				message(STATUS "Setting entry point for executable: ${name}")
+				target_link_options(${name} PRIVATE /ENTRY:wWinMainCRTStartup)
+            
+				# 如果是 GUI 应用程序，还可以设置子系统
+				# target_link_options(${name} PRIVATE /SUBSYSTEM:WINDOWS)
+			elseif(${target_type} STREQUAL "SHARED_LIBRARY")
+				message(STATUS "${name} is a shared library, skipping entry point setting")
+			elseif(${target_type} STREQUAL "STATIC_LIBRARY")
+				message(STATUS "${name} is a static library, skipping entry point setting")
+			endif()
+		
+			target_compile_definitions(${name} PRIVATE 
+			-DWIN32
+			-D_DEBUG
+			-D_WINDOWS
+			-D_AFXDLL
+			)
 		endif()
-	
-		target_compile_definitions(${name} PRIVATE
-        _CRT_SECURE_NO_WARNINGS
-        _SCL_SECURE_NO_WARNINGS
-        _ITERATOR_DEBUG_LEVEL=0  # 在Debug中禁用迭代器调试
-		)
 		
-        set_target_properties(${name} PROPERTIES
-            COMPILE_FLAGS "/Zc:wchar_t"	# 是
-			#COMPILE_FLAGS "/Zc:wchar_t-" #否
-        )
+			target_compile_definitions(${name} PRIVATE
+			_CRT_SECURE_NO_WARNINGS
+			_SCL_SECURE_NO_WARNINGS
+			_ITERATOR_DEBUG_LEVEL=0  # 在Debug中禁用迭代器调试
+			)
+			
+			set_target_properties(${name} PROPERTIES
+				COMPILE_FLAGS "/Zc:wchar_t"	# 是
+				#COMPILE_FLAGS "/Zc:wchar_t-" #否
+			)
 
-        # set_target_properties(${name} PROPERTIES
-        # COMPILE_FLAGS "-bigobj"
-        # )
-        set_target_properties(${PROJECT_NAME} PROPERTIES
-            MSVC_RUNTIME_LIBRARY MultiThreadedDLL
-        )
+			# set_target_properties(${name} PROPERTIES
+			# COMPILE_FLAGS "-bigobj"
+			# )
+			set_target_properties(${PROJECT_NAME} PROPERTIES
+				MSVC_RUNTIME_LIBRARY MultiThreadedDLL
+			)
     endif()
 
     if(CMAKE_BUILD_TYPE STREQUAL "")
