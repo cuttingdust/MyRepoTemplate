@@ -21,13 +21,36 @@ set(SDK_LIB_DIRECTORY
 	# $ENV{MYSQL_SERVER80}/lib
 )
 
+# 根据 -A 参数设置输出路径
+if(CMAKE_GENERATOR_PLATFORM)
+    # 将平台名称映射到标准架构名称
+    if(CMAKE_GENERATOR_PLATFORM STREQUAL "Win32")
+        set(ARCH_SUFFIX ".x86")
+    elseif(CMAKE_GENERATOR_PLATFORM STREQUAL "x64")
+        set(ARCH_SUFFIX ".x64")
+    elseif(CMAKE_GENERATOR_PLATFORM STREQUAL "ARM64")
+        set(ARCH_SUFFIX ".arm64")
+    else()
+        set(ARCH_SUFFIX ".${CMAKE_GENERATOR_PLATFORM}")
+    endif()
+else()
+    # 默认架构
+    set(ARCH_SUFFIX ".x64")
+endif()
+
 # 输出路径
 set(OUT ${CMAKE_CURRENT_SOURCE_DIR}/../out)
 message("out = ${OUT}")
+
+set(OUT_DLL_PATH ${OUT}/bin${ARCH_SUFFIX})
 set(OUT_LIB_PATH ${OUT}/lib)
-set(OUT_DLL_PATH ${OUT}/bin.x64)
+set(OUT_DLL_PATH ${OUT}/bin${ARCH_SUFFIX})
 set(OUT_INCLUDE_PATH ${OUT}/include)
-set(OUT_RUN_PATH ${OUT}/bin.x64)
+set(OUT_RUN_PATH ${OUT}/bin${ARCH_SUFFIX})
+
+message(STATUS "输出路径架构后缀: ${ARCH_SUFFIX}")
+message(STATUS "DLL 路径: ${OUT_DLL_PATH}")
+
 
 # 安装与查找
 string(REPLACE "\\" "/" INSTALL_PREFIX ${OUT})
@@ -72,6 +95,27 @@ set(LOG_MOUDLES
 #python
 set(PYTHON_MOUDLES
 	Python3::Python
+)
+
+#opencv
+set(Opencv_MOUDLES
+    OpenCV_LIBS
+)
+
+#ffmpeg
+set(FFMEPG_MOUDLES
+    avcodec
+	avdevice
+	avfilter
+	avformat
+	avutil
+	swresample
+	swscale
+)
+
+#fmt
+set(FMT_MOUDLES
+	fmt::fmt
 )
 
 # 获取当前目录下源码和头文件
@@ -264,7 +308,11 @@ macro(set_cpp name)
 	# message("Libevent_FOUND = ${Libevent_FOUND}")
     # target_link_libraries(${name} ${Libevent_MOUDLES})
 	
-
+	if(FFMPEG_FOUND)
+		target_link_directories(${name} PRIVATE ${FFMPEG_LIBRARY_DIRS})
+        target_include_directories(${name} PRIVATE ${FFMPEG_INCLUDE_DIRS})
+    endif()
+	
     message("DPS_INCLUDES = ${DPS_INCLUDES}")
 
     # 路径被两次引用 1 编译slib库时 2 install export写入config时
