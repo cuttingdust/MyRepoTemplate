@@ -403,8 +403,8 @@ macro(set_cpp name)
 		
 			target_compile_definitions(${name} PRIVATE
 			_CRT_SECURE_NO_WARNINGS
-			_SCL_SECURE_NO_WARNINGS
-			_ITERATOR_DEBUG_LEVEL=0  # 在Debug中禁用迭代器调试
+			# _SCL_SECURE_NO_WARNINGS
+			# _ITERATOR_DEBUG_LEVEL=0  # 在Debug中禁用迭代器调试
 			)
 			
 			set_target_properties(${name} PROPERTIES
