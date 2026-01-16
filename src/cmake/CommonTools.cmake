@@ -394,29 +394,33 @@ macro(set_cpp name)
 			endif()
 		
 			target_compile_definitions(${name} PRIVATE 
-			-DWIN32
-			-D_DEBUG
-			-D_WINDOWS
-			-D_AFXDLL
+				-DWIN32
+				-D_DEBUG
+				-D_WINDOWS
+				-D_AFXDLL
 			)
 		endif()
 		
-			target_compile_definitions(${name} PRIVATE
+		target_compile_definitions(${name} PRIVATE
 			_CRT_SECURE_NO_WARNINGS
 			_SCL_SECURE_NO_WARNINGS
 			_ITERATOR_DEBUG_LEVEL=0  # 在Debug中禁用迭代器调试
-			)
-			
-			set_target_properties(${name} PROPERTIES
-				COMPILE_FLAGS "/Zc:wchar_t"	# 是
-				#COMPILE_FLAGS "/Zc:wchar_t-" #否
-			)
+		)
+		
+		set_target_properties(${name} PROPERTIES
+			COMPILE_FLAGS "/Zc:wchar_t"	# 是
+			#COMPILE_FLAGS "/Zc:wchar_t-" #否
+		)
 
-			# set_target_properties(${name} PROPERTIES
-			# COMPILE_FLAGS "-bigobj"
-			# )
-			set_target_properties(${PROJECT_NAME} PROPERTIES
-				MSVC_RUNTIME_LIBRARY MultiThreadedDLL
+		# set_target_properties(${name} PROPERTIES
+		# COMPILE_FLAGS "-bigobj"
+		# )
+		set_target_properties(${name} PROPERTIES
+			MSVC_RUNTIME_LIBRARY 
+			"$<$<CONFIG:Debug>:MultiThreadedDebugDLL>"
+			"$<$<CONFIG:Release>:MultiThreadedDLL>"
+			"$<$<CONFIG:RelWithDebInfo>:MultiThreadedDLL>"
+			"$<$<CONFIG:MinSizeRel>:MultiThreadedDLL>"
 			)
     endif()
 
