@@ -102,6 +102,11 @@ set(CUDA_MOUDLES
 	CUDA::cudart_static
 )
 
+#opengl
+set(OPENGL_MOUDLES
+	OpenGL::GLU
+)
+
 #opencv
 set(Opencv_MOUDLES
     OpenCV_LIBS

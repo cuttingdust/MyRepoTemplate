@@ -48,6 +48,12 @@ if(OpenMP_FOUND)
     set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} ${OpenMP_EXE_LINKER_FLAGS}")
 endif()
 
+# #OpenGL
+# find_package(OpenGL REQUIRED)
+# message("OpenGL_FOUND = ${OpenGL_FOUND}")
+# message("OPENGL_VERSION = ${OPENGL_VERSION}")
+# message("OPENGL_LIBS = ${OPENGL_LIBS}")
+
 # #MFC
 # find_package(MFC)
 # message("MFC_FOUND = ${MFC_FOUND}")
