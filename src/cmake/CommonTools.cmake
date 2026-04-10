@@ -103,7 +103,7 @@ set(CUDA_MOUDLES
 )
 
 #opengl
-set(OPENGL_MOUDLES
+set(OpenGL_MOUDLES
 	OpenGL::GLU
 )
 
