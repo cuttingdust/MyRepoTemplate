@@ -463,8 +463,16 @@ macro(set_cpp name)
 				cuda_std_17
 			)
 			
-			target_compile_definitions(${name} PUBLIC
+			target_compile_definitions(${name} PRIVATE
 				-D$<$<COMPILE_LANGUAGE:CUDA>:CUDA_ENABLED>
+			)
+			
+			target_compile_options(${name} PRIVATE
+				$<$<CONFIG:Debug>:
+					$<$<COMPILE_LANGUAGE:CUDA>:
+						-G -lineinfo
+					>
+				>
 			)
 			
 			target_compile_options(${name} PRIVATE
