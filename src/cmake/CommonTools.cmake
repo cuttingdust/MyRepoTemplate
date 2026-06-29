@@ -53,12 +53,21 @@ message(STATUS "DLL 路径: ${OUT_DLL_PATH}")
 
 
 # 安装与查找
-string(REPLACE "\\" "/" INSTALL_PREFIX ${OUT})
-set(CMAKE_INSTALL_PREFIX ${INSTALL_PREFIX})
+set(XCPP_IN_VCPKG_PORT OFF)
+if(DEFINED VCPKG_TARGET_TRIPLET AND CMAKE_INSTALL_PREFIX MATCHES "[/\\\\]packages[/\\\\]")
+    set(XCPP_IN_VCPKG_PORT ON)
+endif()
+
+if(NOT XCPP_IN_VCPKG_PORT)
+    string(REPLACE "\\" "/" INSTALL_PREFIX ${OUT})
+    set(CMAKE_INSTALL_PREFIX ${INSTALL_PREFIX})
+endif()
 message("CMAKE_INSTALL_PREFIX = ${CMAKE_INSTALL_PREFIX}")
 
-set(CMAKE_PREFIX_PATH ${INSTALL_PREFIX}/lib/config)
-message("CMAKE_PREFIX_PATH = ${CMAKE_PREFIX_PATH}")
+if(DEFINED INSTALL_PREFIX)
+    set(CMAKE_PREFIX_PATH ${INSTALL_PREFIX}/lib/config)
+    message("CMAKE_PREFIX_PATH = ${CMAKE_PREFIX_PATH}")
+endif()
 
 # Qt Moudle
 set(QT6_MOUDLES
@@ -525,20 +534,22 @@ macro(set_cpp name)
     set(CONF_TYPES Debug Release RelWithDebInfo MinSizeRel)
     list(APPEND CONF_TYPES "")
 
-    foreach(type IN LISTS CONF_TYPES)
-        set(conf "")
+    if(NOT XCPP_IN_VCPKG_PORT)
+        foreach(type IN LISTS CONF_TYPES)
+            set(conf "")
 
-        if(type)
-            string(TOUPPER _${type} conf)
-        endif()
+            if(type)
+                string(TOUPPER _${type} conf)
+            endif()
 
-        set_target_properties(${name} PROPERTIES
-            RUNTIME_OUTPUT_DIRECTORY${conf} ${OUT_RUN_PATH} # dll  exe 执行程序
-            LIBRARY_OUTPUT_DIRECTORY${conf} ${OUT_LIB_PATH} # .so .dylib
-            ARCHIVE_OUTPUT_DIRECTORY${conf} ${OUT_LIB_PATH} # .lib .a
-            PDB_OUTPUT_DIRECTORY${conf} ${OUT_RUN_PATH} # pdb
-        )
-    endforeach()
+            set_target_properties(${name} PROPERTIES
+                RUNTIME_OUTPUT_DIRECTORY${conf} ${OUT_RUN_PATH} # dll  exe 执行程序
+                LIBRARY_OUTPUT_DIRECTORY${conf} ${OUT_LIB_PATH} # .so .dylib
+                ARCHIVE_OUTPUT_DIRECTORY${conf} ${OUT_LIB_PATH} # .lib .a
+                PDB_OUTPUT_DIRECTORY${conf} ${OUT_RUN_PATH} # pdb
+            )
+        endforeach()
+    endif()
 
     set_target_properties(${name} PROPERTIES
     DEBUG_POSTFIX "_d"
