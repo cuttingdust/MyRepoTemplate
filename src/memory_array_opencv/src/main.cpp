@@ -1,4 +1,5 @@
 ﻿#include <iostream>
+#include <MLog/MLog.h>
 #include <opencv2/opencv.hpp>
 
 constexpr auto test_img_file = "assert/lena_hed.jpg";
@@ -6,6 +7,10 @@ constexpr auto test_img_file = "assert/lena_hed.jpg";
 int main(int argc, char* argv[])
 {
     {
+        MLog::Instance()->ResetLogger(LogTarget::CONSOLE_FILE_MSVC);
+        MInfo("memory_array_opencv started");
+        MWarn("memory_array_opencv started");
+        MError("memory_array_opencv started");
         std::cout << "cppds.com" << std::endl;
         /// 400 x 400 的灰度图 做反色 黑色=》白色
         /// 一个字节unsigned char 表示灰度
@@ -42,6 +47,6 @@ int main(int argc, char* argv[])
         }
     }
 
-    // getchar();
+    getchar();
     return 0;
 }

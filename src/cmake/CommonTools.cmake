@@ -101,6 +101,11 @@ set(LOG_MOUDLES
 	spdlog::spdlog_header_only
 )
 
+#mlog
+set(MLOG_MOUDLES
+	MLog::MLog
+)
+
 #python
 set(PYTHON_MOUDLES
 	Python3::Python

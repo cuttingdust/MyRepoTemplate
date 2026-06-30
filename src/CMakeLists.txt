@@ -85,6 +85,9 @@ message("OpenCV_FOUND = ${OpenCV_FOUND}")
 message("OpenCV_VERSION = ${OpenCV_VERSION}")
 message("OpenCV_LIBS = ${OpenCV_LIBS}")
 
+# MLog
+find_package(MLog CONFIG REQUIRED)
+
 # 外部依赖项
 set(DPS_INCLUDES)
 set(DPS_TARGETS)
